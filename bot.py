@@ -46,14 +46,14 @@ def link(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text='El link de este grupo es: https://t.me/joinchat/EXE9HESRmd4ihACntQbtoA', reply_to_message_id=update.message.message_id)
 
 def gat(bot, update):
-	bot.send_document(chat_id=chat_id, document=BQADBAADIQYAAmYu6VGU1rcuxJqDlAI )
+	bot.send_document(chat_id=update.message.chat_id, document=BQADBAADIQYAAmYu6VGU1rcuxJqDlAI )
 
 
 def hola(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text=random.choice(["Hola, cuanto tiempo :D", "Hola", "Eyyy", "Hacia mucho tiempo que no te veia", "Holaaa!!! Cuanto tiempo tio?!?!?!?!", "No tengo nada que decir jajaja"]), reply_to_message_id=update.message.message_id)
 
 def gapps(bot, update):
-	bot.send_message(chat_id=update.message.chat_id, text="*Estas son las diferentes GAPPS que hay para android 8:* \n\n[OPENGAPPS](http://opengapps.org/)\n\n[MICROG](https://microg.org/download.html)",parse_mode=telegram.ParseMode.MARKDOWN)
+	bot.send_message(chat_id=update.message.chat_id, text="*Estas son las diferentes GAPPS que hay para android 8:* \n\n[MINDTHEGAPPS](http://downloads.codefi.re/jdcteam/javelinanddart/gapps/)\n\n[OPENGAPPS](http://opengapps.org/)\n\n[MICROG](https://microg.org/download.html)",parse_mode=telegram.ParseMode.MARKDOWN)
 
 def notificaciones(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text="*Si tienes problemas con las notificaciones sigue* [ESTE TUTORIAL](http://telegra.ph/NO-PERDER-NOTIFICACIONES-EN-EUI-03-30).", parse_mode=telegram.ParseMode.MARKDOWN)
