@@ -7,6 +7,10 @@ import os
 import sys
 from functools import wraps
 from threading import Thread
+from io import BytesIO
+from time import sleep
+from typing import Optional
+import tgbot
 
 config = configparser.ConfigParser()
 config.read('token.txt')
@@ -14,21 +18,29 @@ config.read('token.txt')
 bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 updater = Updater(bot.token)
-
+#List of admins
+#Gather group ids to broadcast messages
+CHAT_IDS = [-1001176122092,-1001150392798,-1001074112167,-1001096142689]
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
-
+#3 grupos?
+CHAT_IDS_LEN = len(CHAT_IDS) + 1;
 
 def restricted(func):
     @wraps(func)
     def wrapped(bot, update, *args, **kwargs):
         user_id = update.effective_user.id
         if user_id not in LIST_OF_ADMINS:
-            bot.send_message(chat_id=update.message.chat_id, text="No puede hacer eso.", reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=update.message.chat_id, text="No puedes hacer eso.", reply_to_message_id=update.message.message_id)
             return
         return func(bot, update, *args, **kwargs)
     return wrapped
 
-
+@restricted
+def broadcast(bot, update):
+    pass
+    to_send = update.effective_message.text.split(None, 1)
+    for x in range(0,CHAT_IDS_LEN):
+        bot.send_message(chat_id=CHAT_IDS[x], text=to_send[1])
 
 def stop_and_restart():
 	updater.stop()
@@ -47,7 +59,7 @@ def start(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text="*Comandos útiles:*\n\n/aosip - Ultima AOSIP\n\n/Gapps - Link para distintas GAPPS\n\n/gat - Fotos de gatos adorables xd\n\n/notificaciones - Sigue este tutorial si no te llegan notificaciones en EUI\n\n/grupos - Grupos que pueden ser de utilidad\n\n/gcam - ultima camara de google\n\n/selinux - Para cambiar a permisive etc\n\n/roms - Tutorial para instalar ROMS\n\n/logcat - Como hacer un logcat para que se puedan corregir esos errores\n\n/magisk - descargar magisk manager\n\n*SI QUIERES ENVIAR ALGUNA SUGERENCIA, CONTACTA CON* @KarloMoDZz *o* @Gabronog", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 def mention(bot, update):
-	bot.send_message(chat_id=update.message.chat_id, text=random.choice(["QUE QUIERE", "KI TI PASA","Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(", "jaja", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]), reply_to_message_id=update.message.message_id)
+	bot.send_message(chat_id=update.message.chat_id, text=random.choice(["QUE QUIERE", "KI TI PASA","Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(", "jaja"]), reply_to_message_id=update.message.message_id)
 
 def id(bot, update):
 	chat_id = update.message.chat_id
@@ -101,7 +113,7 @@ def url(bot, update):
 def new_user(bot, update):
 	message_texts = []
 	for user in (update.message.new_chat_members or [update.message.from_user]):
-		if not user.is_bot: 
+		if not user.is_bot:
 			user_name = user.first_name or user.last_name or user.username
 			user_name = ", {}".format(user_name) if user_name else ""
 			message_texts.append("¡Bienvenid@{} ,al grupo de Leeco!".format(user_name))
@@ -123,13 +135,13 @@ def ancla(bot, update):
 
 
 
-
+#CommandHandler
 restart = CommandHandler("r", restart)
 start = CommandHandler("start", start)
 mention = MessageHandler(Filters.entity("mention"), mention)
 botid = CommandHandler("id", id)
 aosip = CommandHandler("aosip", aosip)
-gat = CommandHandler("gat", gat)
+gat = CommandHandler("cat", gat)
 hola = RegexHandler("Hola", hola)
 gapps = CommandHandler("gapps", gapps)
 noti = CommandHandler("notificaciones", notificaciones)
@@ -141,8 +153,8 @@ logcat = CommandHandler("logcat", logcat)
 magisk = CommandHandler("magisk", magisk)
 new_user = MessageHandler(Filters.status_update.new_chat_members, new_user)
 ancla = RegexHandler("Anclado:", ancla)
+BROADCAST_HANDLER = CommandHandler("broadcast", broadcast)
 url = RegexHandler("http://tinyurl.com", url)
-
 
 
 
@@ -170,6 +182,7 @@ dispatcher.add_handler(magisk)
 dispatcher.add_handler(url)
 dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
+dispatcher.add_handler(BROADCAST_HANDLER)
 
 
 
