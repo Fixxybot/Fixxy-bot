@@ -12,9 +12,9 @@ updater = Updater(bot.token)
 
 
 def url(bot, update):
-  bot.delete_message(chat_id=message.chat_id,message_id=update.message.message_id)
-  bot.kick_chat_member(chat_id=update.message.chat.id, message_id=update.message.message_id)
-  bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.", reply_to_message_id=update.message.message_id)
+  bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
+  bot.delete_message(chat_id=update.message.chat_id,message_id=update.message.message_id)
+  bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
 
 def stop_and_restart():
 	updater.stop()
