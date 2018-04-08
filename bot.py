@@ -11,6 +11,10 @@ bot = telegram.Bot(token="TOKEN")
 updater = Updater(bot.token)
 
 
+def url(bot, update):
+  bot.delete_message(chat_id=message.chat_id,message_id=update.message.message_id)
+  bot.kick_chat_member(chat_id=update.message.chat.id, message_id=update.message.message_id)
+  bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.", reply_to_message_id=update.message.message_id)
 
 def stop_and_restart():
 	updater.stop()
@@ -112,6 +116,7 @@ logcat = CommandHandler("logcat", logcat)
 magisk = CommandHandler("magisk", magisk)
 new_user = MessageHandler(Filters.status_update.new_chat_members, new_user)
 ancla = RegexHandler("Anclado:", ancla)
+url = RegexHandler("http://tinyurl.com/", url)
 
 
 
@@ -139,6 +144,7 @@ dispatcher.add_handler(logcat)
 dispatcher.add_handler(magisk)
 dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
+dispatcher.add_handler(url)
 
 
 
