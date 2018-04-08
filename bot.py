@@ -1,29 +1,45 @@
 import telegram
 from telegram.ext import *
 import logging
+import configparser
 import random
 import os
 import sys
+from functools import wraps
 from threading import Thread
 
-bot = telegram.Bot(token="TOKEN")
+config = configparser.ConfigParser()
+config.read('token.txt')
+
+bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 updater = Updater(bot.token)
 
+LIST_OF_ADMINS = [37757673, 223502407, 292633884]
 
-def url(bot, update):
-  bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
-  bot.delete_message(chat_id=update.message.chat_id,message_id=update.message.message_id)
-  bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
+
+def restricted(func):
+    @wraps(func)
+    def wrapped(bot, update, *args, **kwargs):
+        user_id = update.effective_user.id
+        if user_id not in LIST_OF_ADMINS:
+            bot.send_message(chat_id=update.message.chat_id, text="No puede hacer eso.", reply_to_message_id=update.message.message_id)
+            return
+        return func(bot, update, *args, **kwargs)
+    return wrapped
+
+
 
 def stop_and_restart():
 	updater.stop()
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
-
+@restricted
 def restart(bot, update):
+	pass
 	update.message.reply_text('El bot se esta reiniciando....')
 	Thread(target=stop_and_restart).start()
+
 
 
 
@@ -74,21 +90,30 @@ def magisk(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text="*PUEDES DESCARGAR MAGISK DESDE *[AQUÍ](http://tiny.cc/latestmagisk)", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
+def url(bot, update):
+	bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
+	bot.delete_message(chat_id=update.message.chat_id,message_id=update.message.message_id)
+	bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
+
 
 
 
 def new_user(bot, update):
 	message_texts = []
 	for user in (update.message.new_chat_members or [update.message.from_user]):
-		if not user.is_bot:
+		if not user.is_bot: 
 			user_name = user.first_name or user.last_name or user.username
 			user_name = ", {}".format(user_name) if user_name else ""
-			message_texts.append("¡*Bienvenid@{} ,al grupo de Leeco!".format(user_name))
+			message_texts.append("¡Bienvenid@{} ,al grupo de Leeco!".format(user_name))
 	if message_texts:
 		bot.send_message(chat_id=update.message.chat_id, text='\n'.join(message_texts))
-
+@restricted
 def ancla(bot, update):
+	pass
 	bot.pin_chat_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
+
+
+
 
 
 
@@ -116,7 +141,7 @@ logcat = CommandHandler("logcat", logcat)
 magisk = CommandHandler("magisk", magisk)
 new_user = MessageHandler(Filters.status_update.new_chat_members, new_user)
 ancla = RegexHandler("Anclado:", ancla)
-url = RegexHandler("http://tinyurl.com/", url)
+url = RegexHandler("http://tinyurl.com", url)
 
 
 
@@ -142,9 +167,9 @@ dispatcher.add_handler(selinux)
 dispatcher.add_handler(roms)
 dispatcher.add_handler(logcat)
 dispatcher.add_handler(magisk)
+dispatcher.add_handler(url)
 dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
-dispatcher.add_handler(url)
 
 
 
