@@ -60,10 +60,10 @@ def start(bot, update):
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
-def mention(bot, update):
-	bot.send_message(chat_id=update.message.chat_id, text=random.choice(
-		["QUE QUIERE", "KI TI PASA", "Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(",
-		 "jaja"]), reply_to_message_id=update.message.message_id)
+#def mention(bot, update):
+#	bot.send_message(chat_id=update.message.chat_id, text=random.choice(
+	#	["QUE QUIERE", "KI TI PASA", "Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(",
+#		 "jaja"]), reply_to_message_id=update.message.message_id)
 
 
 def id(bot, update):
