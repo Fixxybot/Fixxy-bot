@@ -60,10 +60,10 @@ def start(bot, update):
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
-#def mention(bot, update):
-#	bot.send_message(chat_id=update.message.chat_id, text=random.choice(
-	#	["QUE QUIERE", "KI TI PASA", "Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(",
-#		 "jaja"]), reply_to_message_id=update.message.message_id)
+"""def mention(bot, update):
+	bot.send_message(chat_id=update.message.chat_id, text=random.choice(
+		["QUE QUIERE", "KI TI PASA", "Supongo que llevaras razon....", "Estaba claro....", "Me vas a hacer llorar :(",
+		 "jaja"]), reply_to_message_id=update.message.message_id)"""
 
 
 def id(bot, update):
@@ -169,7 +169,7 @@ def ancla(bot, update):
 # CommandHandler
 restart = CommandHandler("r", restart)
 start = CommandHandler("start", start)
-mention = MessageHandler(Filters.entity("mention"), mention)
+# mention = MessageHandler(Filters.entity("mention"), mention)
 botid = CommandHandler("id", id)
 aosip = CommandHandler("aosip", aosip)
 cat = CommandHandler("cat", cat)
@@ -191,7 +191,7 @@ dispatcher = updater.dispatcher
 
 dispatcher.add_handler(restart)
 dispatcher.add_handler(start)
-dispatcher.add_handler(mention)
+# dispatcher.add_handler(mention)
 dispatcher.add_handler(botid)
 dispatcher.add_handler(aosip)
 dispatcher.add_handler(cat)
