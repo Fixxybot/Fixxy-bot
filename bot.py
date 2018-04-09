@@ -15,10 +15,10 @@ bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 updater = Updater(bot.token)
 #Gather group ids to broadcast messages
-CHAT_IDS = [-1001227422313, -1001074112167, -1001176122092, -1001150392798, -1001096142689]
+CHAT_IDS_ES = [-1001227422313, -1001074112167, -1001176122092, -1001150392798, -1001096142689]
 # List of admins
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
-CHAT_IDS_LEN = len(CHAT_IDS) + 1
+CHAT_IDS_ES_LEN = len(CHAT_IDS_ES) + 1
 
 def restricted(func):
 	@wraps(func)
@@ -102,6 +102,7 @@ def notificaciones(bot, update):
 
 @restricted
 def ban(bot, update):
+	pass
 	chat_id = update.message.chat_id
 	bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
 	bot.send_message(chat_id=chat_id, text="Baneado correctamente!", reply_to_message_id=update.message.message_id)
