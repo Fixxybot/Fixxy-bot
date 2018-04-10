@@ -15,7 +15,7 @@ bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 updater = Updater(bot.token)
 #Gather group ids to broadcast messages
-CHAT_IDS_ES = [-1001227422313, -1001074112167, -1001176122092, -1001150392798, -1001096142689]
+CHAT_IDS_ES = [-1001074112167, -1001176122092, -1001150392798, -1001096142689]
 # List of admins
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
 CHAT_IDS_ES_LEN = len(CHAT_IDS_ES) + 1
