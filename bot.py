@@ -39,6 +39,15 @@ def restricted(func):
 	return wrapped
 
 @restricted
+def pull(bot, update):
+    pass
+    os.system('~/leeco/gitpull.sh')
+    bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
+                     parse_mode=telegram.ParseMode.MARKDOWN,
+                     reply_to_message_id=update.message.message_id)
+    Thread(target=stop_and_restart).start()
+    
+@restricted
 def broadcast(bot, update):
 	pass
 	to_send = update.effective_message.text.split(None, 1)
@@ -198,6 +207,8 @@ magisk = CommandHandler("magisk", magisk)
 new_user = MessageHandler(Filters.status_update.new_chat_members, new_user)
 ancla = CommandHandler("pin", ancla)
 BROADCAST_HANDLER = CommandHandler("broadcast", broadcast)
+ACTUALIZANDO = CommandHandler("actualizar", pull)
+
 kickthefbot = RegexHandler("http://tinyurl.com", kickthefbot)
 
 dispatcher = updater.dispatcher
@@ -221,6 +232,8 @@ dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
 dispatcher.add_handler(ban)
 dispatcher.add_handler(BROADCAST_HANDLER)
+dispatcher.add_handler(ACTUALIZANDO)
+
 
 updater.start_polling()
 
