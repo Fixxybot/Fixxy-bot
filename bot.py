@@ -5,6 +5,7 @@ import random
 import sys
 from functools import wraps
 from threading import Thread
+import git
 
 import telegram
 from telegram.ext import *
@@ -38,17 +39,6 @@ def restricted(func):
 
 	return wrapped
 
-
-@restricted
-def pull(bot, update):
-	pass
-	os.system('~/leeco/gitpull.sh')
-	bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
-	                 parse_mode=telegram.ParseMode.MARKDOWN,
-	                 reply_to_message_id=update.message.message_id)
-	Thread(target=stop_and_restart).start()
-
-
 @restricted
 def broadcast(bot, update):
 	pass
@@ -72,13 +62,18 @@ def restart(bot, update):
 	update.message.reply_text('El bot se esta reiniciando....')
 	Thread(target=stop_and_restart).start()
 
+@restricted
+def pull(bot, update):
+	pass
+	g = git.cmd.Git('~/leeco')
+	g.pull()
+	bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
+	                 parse_mode=telegram.ParseMode.MARKDOWN,
+	                 reply_to_message_id=update.message.message_id)
+	Thread(target=stop_and_restart).start()
 
 def start(bot, update):
-	try:
-		bot.send_message(chat_id=-21343214321, text="test")
-	except:
-		bot.send_message(chat_id=update.message.chat_id, text="fewqfwqefewqfwqet")
-
+    bot.send_message(chat_id=update.message.chat_id, text="Comandos útiles:\n\n/aosip - Ultima AOSIP\n\n/Gapps - Link para distintas GAPPS\n\n/gat - Fotos de gatos adorables xd\n\n/notificaciones - Sigue este tutorial si no te llegan notificaciones en EUI\n\n/grupos - Grupos que pueden ser de utilidad\n\n/gcam - ultima camara de google\n\n/selinux - Para cambiar a permisive etc\n\n/roms - Tutorial para instalar ROMS\n\n/logcat - Como hacer un logcat para que se puedan corregir esos errores\n\n/magisk - descargar magisk manager\n\nSI QUIERES ENVIAR ALGUNA SUGERENCIA, CONTACTA CON @KarloMoDZz o @Gabronog", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 def id(bot, update):
 	chat_id = update.message.chat_id
