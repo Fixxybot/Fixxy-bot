@@ -1,9 +1,8 @@
 import configparser
+import logging
 import os
 import random
 import sys
-import time
-import logging
 from functools import wraps
 from threading import Thread
 
@@ -16,15 +15,16 @@ config.read('token.txt')
 bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 logging.basicConfig(
-format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-level=logging.INFO)
+	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+	level=logging.INFO)
 
 updater = Updater(bot.token)
-#Gather group ids to broadcast messages
-CHAT_IDS_ES = [-1001074112167,-1001176122092,"@Leecox722",-1001096142689,"@AOSiP_x2"]
+# Gather group ids to broadcast messages
+CHAT_IDS_ES = [-1001074112167, -1001176122092, "@Leecox722", -1001096142689, "@AOSiP_x2"]
 # List of admins
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
 CHAT_IDS_ES_LEN = len(CHAT_IDS_ES)
+
 
 def restricted(func):
 	@wraps(func)
@@ -38,15 +38,17 @@ def restricted(func):
 
 	return wrapped
 
+
 @restricted
 def pull(bot, update):
-    pass
-    os.system('~/leeco/gitpull.sh')
-    bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
-                     parse_mode=telegram.ParseMode.MARKDOWN,
-                     reply_to_message_id=update.message.message_id)
-    Thread(target=stop_and_restart).start()
-    
+	pass
+	os.system('~/leeco/gitpull.sh')
+	bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
+	                 parse_mode=telegram.ParseMode.MARKDOWN,
+	                 reply_to_message_id=update.message.message_id)
+	Thread(target=stop_and_restart).start()
+
+
 @restricted
 def broadcast(bot, update):
 	pass
@@ -55,14 +57,13 @@ def broadcast(bot, update):
 		try:
 			bot.send_message(chat_id=x, text=to_send[1])
 		except:
-			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a "+str(x), reply_to_message_id=update.message.message_id)
+			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a " + str(x),
+			                 reply_to_message_id=update.message.message_id)
+
 
 def stop_and_restart():
 	updater.stop()
 	os.execl(sys.executable, sys.executable, *sys.argv)
-
-
-
 
 
 @restricted
@@ -79,7 +80,6 @@ def start(bot, update):
 		bot.send_message(chat_id=update.message.chat_id, text="fewqfwqefewqfwqet")
 
 
-
 def id(bot, update):
 	chat_id = update.message.chat_id
 	bot.send_message(chat_id=update.message.chat_id, text="ID: " + str(chat_id),
@@ -91,6 +91,7 @@ def aosip(bot, update):
 	                 text="🌐 *LINK PARA ULTIMA AOSIP:*\n├[🗂LEPRO3](http://get.aosiprom.com/zl1)\n└[🗂LEMAX2](http://get.aosiprom.com/x2)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
+
 def cat(bot, update):
 	bot.send_photo(chat_id=update.message.chat_id, photo=random.choice(
 		["google.es"]))
@@ -101,7 +102,6 @@ def hola(bot, update):
 		["Hola, cuanto tiempo :D", "Hola", "Eyyy", "Hacia mucho tiempo que no te veia", "Adios",
 		 "Holaaa!!! Cuanto tiempo tio?!?!?!?!", "No tengo nada que decir jajaja", "Hace mucho que no te veo."]),
 	                 reply_to_message_id=update.message.message_id)
-
 
 
 def gapps(bot, update):
@@ -121,7 +121,8 @@ def ban(bot, update):
 	pass
 	chat_id = update.message.chat_id
 	bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
-	bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....", reply_to_message_id=update.message.message_id)
+	bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....",
+	                 reply_to_message_id=update.message.message_id)
 
 
 def grupos(bot, update):
@@ -129,15 +130,18 @@ def grupos(bot, update):
 	                 text="🌐*GRUPOS QUE TE PUEDEN INTERESAR:*\n\n🌐*LE PRO 3*\n├[📱LePro3](https://t.me/joinchat/CszTz0YaMuyR3MwBuzy-nw)\n├[📱LePro3x722](https://t.me/Leecox722)\n└[📱LePro3(Inglés)](https://t.me/leecolepro3roms)\n\n🌐*LE MAX 2*\n├[📱LeMax2AOSIP](https://t.me/AOSiP_x2)\n└[📱LeMax2INTERNACIONAL](https://t.me/lemax2xda)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN)
 
+
 def gcam(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
 	                 text="*PUEDES DESCARGAR LA CAMARA DE GOOGLE DESDE *[AQUÍ](https://www.celsoazevedo.com/files/android/google-camera)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
+
 def selinux(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
 	                 text="*SELinuxModeChanger v10.0, Para poner el telefono en PERMISIVO*\n\n\n*Puedes descargarlo desde* [AQUÍ](https://github.com/MrBIMC/SELinuxModeChanger/releases/download/10.0/app-release-v10.apk)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+
 
 def roms(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
@@ -149,6 +153,7 @@ def logcat(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
 	                 text="*COMO HACER UN LOG*\n\n[AQUÍ](https://wiki.lineageos.org/logcat.html)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+
 
 def magisk(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
@@ -233,7 +238,6 @@ dispatcher.add_handler(ancla)
 dispatcher.add_handler(ban)
 dispatcher.add_handler(BROADCAST_HANDLER)
 dispatcher.add_handler(ACTUALIZANDO)
-
 
 updater.start_polling()
 
