@@ -2,6 +2,8 @@ import configparser
 import os
 import random
 import sys
+import time
+import logging
 from functools import wraps
 from threading import Thread
 
@@ -13,12 +15,16 @@ config.read('token.txt')
 
 bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
+logging.basicConfig(
+format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+level=logging.INFO)
+
 updater = Updater(bot.token)
 #Gather group ids to broadcast messages
-CHAT_IDS_ES = [-1001074112167, -1001176122092, -1001150392798, -1001096142689]
+CHAT_IDS_ES = [-1001074112167,-1001176122092,"@Leecox722",-1001096142689]
 # List of admins
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
-CHAT_IDS_ES_LEN = len(CHAT_IDS_ES) + 1
+CHAT_IDS_ES_LEN = len(CHAT_IDS_ES)
 
 def restricted(func):
 	@wraps(func)
@@ -36,13 +42,18 @@ def restricted(func):
 def broadcast(bot, update):
 	pass
 	to_send = update.effective_message.text.split(None, 1)
-	for x in range(0, CHAT_IDS_ES_LEN):
-		bot.send_message(chat_id=CHAT_IDS_ES[x], text=to_send[1])
-
+	for x in CHAT_IDS_ES:
+		try:
+			bot.send_message(chat_id=x, text=to_send[1])
+		except:
+			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a "+str(x), reply_to_message_id=update.message.message_id)
 
 def stop_and_restart():
 	updater.stop()
 	os.execl(sys.executable, sys.executable, *sys.argv)
+
+
+
 
 
 @restricted
@@ -53,9 +64,10 @@ def restart(bot, update):
 
 
 def start(bot, update):
-	bot.send_message(chat_id=update.message.chat_id,
-	                 text="*Comandos útiles:*\n\n/aosip - Ultima AOSIP\n\n/Gapps - Link para distintas GAPPS\n\n/gat - Fotos de gatos adorables xd\n\n/notificaciones - Sigue este tutorial si no te llegan notificaciones en EUI\n\n/grupos - Grupos que pueden ser de utilidad\n\n/gcam - ultima camara de google\n\n/selinux - Para cambiar a permisive etc\n\n/roms - Tutorial para instalar ROMS\n\n/logcat - Como hacer un logcat para que se puedan corregir esos errores\n\n/magisk - descargar magisk manager\n\n*SI QUIERES ENVIAR ALGUNA SUGERENCIA, CONTACTA CON* @KarloMoDZz *o* @Gabronog",
-	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+	try:
+		bot.send_message(chat_id=-21343214321, text="test")
+	except:
+		bot.send_message(chat_id=update.message.chat_id, text="fewqfwqefewqfwqet")
 
 
 
@@ -72,12 +84,7 @@ def aosip(bot, update):
 
 def cat(bot, update):
 	bot.send_photo(chat_id=update.message.chat_id, photo=random.choice(
-		['https://cdn2www.mundo.com/fotos/201504/Un-adorable-gato-disfrazado-de-conejo1-600x400.jpg',
-		 "http://www.abc.es/media/sociedad/2018/03/10/miau-kJkG--1240x698@abc.jpg",
-		 "https://i.pinimg.com/originals/3d/c0/ab/3dc0ab8e387f66f17a180d1bd89af055.jpg",
-		 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoPyX7KJTVTz1CWdnhKd2hAXIA0XVLIBDkivXONvddGqa5eIwT",
-		 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn0klvfUNyZfHR3IBAWaPnpSFLj8be4KOkmxH1auaC_vuMGe3l",
-		 "http://www.mujerhoy.com/multimedia/201710/30/media/gatos/12.jpg"]))
+		["google.es"]))
 
 
 def hola(bot, update):
@@ -105,7 +112,7 @@ def ban(bot, update):
 	pass
 	chat_id = update.message.chat_id
 	bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
-	bot.send_message(chat_id=chat_id, text="Baneado correctamente!", reply_to_message_id=update.message.message_id)
+	bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....", reply_to_message_id=update.message.message_id)
 
 
 def grupos(bot, update):
@@ -142,6 +149,7 @@ def magisk(bot, update):
 
 def kickthefbot(bot, update):
 	bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
+	bot.forward_message(chat_id=-1001232993925, from_chat_id=-1001232993925, message_id=update.message.message_id)
 	bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
 	bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
 
