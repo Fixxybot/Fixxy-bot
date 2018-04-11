@@ -47,7 +47,7 @@ def broadcast(bot, update):
 		try:
 			bot.send_message(chat_id=x, text=to_send[1])
 		except:
-			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a " + str(x),
+			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a " +str(x),
 			                 reply_to_message_id=update.message.message_id)
 
 
@@ -89,7 +89,7 @@ def aosip(bot, update):
 
 def cat(bot, update):
 	bot.send_photo(chat_id=update.message.chat_id, photo=random.choice(
-		["google.es"]))
+		["https://bit.ly/2JEJG3A","https://bit.ly/2v5Rb0r","https://bit.ly/2IK1s4k","https://bit.ly/2v4PIrg","https://bit.ly/2GPo6rp","https://bit.ly/2qnF3SU"]))
 
 
 def hola(bot, update):
@@ -115,9 +115,43 @@ def notificaciones(bot, update):
 def ban(bot, update):
 	pass
 	chat_id = update.message.chat_id
-	bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
-	bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....",
+	try:
+		bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
+		bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....",
 	                 reply_to_message_id=update.message.message_id)
+	except:
+		bot.send_message(chat_id=chat_id, text="Vaya, No puedo banear a ese usuario :(", reply_to_message_id=update.message.message_id)
+
+
+@restricted
+def kick(bot, update):
+	pass
+	chat_id = update.message.chat_id
+	try:
+		bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
+		bot.unban_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
+		bot.send_message(chat_id=chat_id, text="Expulsado!", reply_to_message_id=update.message.message_id)
+	except:
+		bot.send_message(chat_id=chat_id, text="Vaya, No puedo expulsar a ese usuario :(", reply_to_message_id=update.message.message_id)
+
+@restricted
+def unban(bot, update):
+	pass
+	chat_id = update.message.chat_id
+	bot_id = [519150573,570971980,519150573]
+	from_user_id = update.message.reply_to_message.from_user.id
+	if from_user_id in bot_id:
+		bot.send_message(chat_id=chat_id, text="Que intentas! xD", reply_to_message_id=update.message.message_id)
+	else:
+		try:
+			bot.unban_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
+			bot.send_message(chat_id=chat_id, text="Desbaneado!", reply_to_message_id=update.message.message_id)
+		except:
+			bot.send_message(chat_id=chat_id, text="No puedo desbanear a ese usuario!", reply_to_message_id=update.message.message_id)
+
+
+
+
 
 
 def grupos(bot, update):
@@ -169,7 +203,7 @@ def new_user(bot, update):
 		if not user.is_bot:
 			user_name = user.first_name or user.last_name or user.username
 			user_name = ", {}".format(user_name) if user_name else ""
-			message_texts.append("¡Bienvenid@{} ,al grupo de Leeco!".format(user_name))
+			message_texts.append("¡Bienvenid@{},al grupo de Leeco!".format(user_name))
 	if message_texts:
 		bot.send_message(chat_id=update.message.chat_id, text='\n'.join(message_texts))
 
@@ -199,6 +233,8 @@ gapps = CommandHandler("gapps", gapps)
 noti = CommandHandler("notificaciones", notificaciones)
 grupos = CommandHandler("grupos", grupos)
 ban = CommandHandler("ban", ban)
+kick = CommandHandler("kick", kick)
+unban = CommandHandler("unban", unban)
 gcam = CommandHandler("gcam", gcam)
 selinux = CommandHandler("selinux", selinux)
 roms = CommandHandler("roms", roms)
@@ -231,6 +267,8 @@ dispatcher.add_handler(kickthefbot)
 dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
 dispatcher.add_handler(ban)
+dispatcher.add_handler(kick)
+dispatcher.add_handler(unban)
 dispatcher.add_handler(BROADCAST_HANDLER)
 dispatcher.add_handler(ACTUALIZANDO)
 
