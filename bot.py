@@ -1,3 +1,5 @@
+
+#IMPORTS
 import configparser
 import logging
 import os
@@ -5,10 +7,10 @@ import random
 import sys
 from functools import wraps
 from threading import Thread
-import git
 
 import telegram
 from telegram.ext import *
+
 
 config = configparser.ConfigParser()
 config.read('token.txt')
@@ -21,7 +23,7 @@ logging.basicConfig(
 
 updater = Updater(bot.token)
 # Gather group ids to broadcast messages
-CHAT_IDS_ES = [-1001074112167, -1001176122092, "@Leecox722", -1001096142689, "@AOSiP_x2"]
+CHAT_IDS_ES = [-1001074112167, -1001176122092, "@Leecox722", "@AOSiP_x2"]
 # List of admins
 LIST_OF_ADMINS = [37757673, 223502407, 292633884]
 CHAT_IDS_ES_LEN = len(CHAT_IDS_ES)
@@ -32,8 +34,7 @@ def restricted(func):
 	def wrapped(bot, update, *args, **kwargs):
 		user_id = update.effective_user.id
 		if user_id not in LIST_OF_ADMINS:
-			bot.send_message(chat_id=update.message.chat_id, text="No tienes permiso para hacer eso.",
-			                 reply_to_message_id=update.message.message_id)
+			bot.send_message(chat_id=update.message.chat_id, text="No tienes permiso para hacer eso.", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 			return
 		return func(bot, update, *args, **kwargs)
 
@@ -45,11 +46,26 @@ def broadcast(bot, update):
 	to_send = update.effective_message.text.split(None, 1)
 	for x in CHAT_IDS_ES:
 		try:
-			bot.send_message(chat_id=x, text=to_send[1])
+			bot.send_message(chat_id=x, text=to_send[1], parse_mode=telegram.ParseMode.MARKDOWN)
 		except:
-			bot.send_message(chat_id=update.message.chat_id, text="No he podido mandar el mensaje a " +str(x),
-			                 reply_to_message_id=update.message.message_id)
+			bot.send_message(chat_id=update.message.chat_id, text="*No he podido mandar el mensaje a *" +str(x), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+@restricted
+def di(bot, update):
+	pass
+	chat_id=update.effective_message.text.split(None, 1)
+	to_send = update.effective_message.text.split(None, 2)
+	try:
+		bot.send_message(chat_id=chat_id[1], text=to_send[2])
+		bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
+	except:
+		bot.send_message(chat_id=update.message.chat_id, text="*No he podido mandar el mensaje.*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
+
+def puto(bot, update):
+	mensaje = update.message.text
+	prohibido = ["Aguacate","Arroz","hola","Gabriel"]
+	if mensaje in prohibido:
+		bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
 
 def stop_and_restart():
 	updater.stop()
@@ -67,7 +83,7 @@ def pull(bot, update):
 	pass
 	g = git.cmd.Git('~/leeco')
 	g.pull()
-	bot.send_message(chat_id=update.message.chat_id, text="*Actualizando*",
+	bot.send_message(chat_id=update.message.chat_id, text="*Actualizado*",
 	                 parse_mode=telegram.ParseMode.MARKDOWN,
 	                 reply_to_message_id=update.message.message_id)
 	Thread(target=stop_and_restart).start()
@@ -77,8 +93,13 @@ def start(bot, update):
 
 def id(bot, update):
 	chat_id = update.message.chat_id
-	bot.send_message(chat_id=update.message.chat_id, text="ID: " + str(chat_id),
-	                 reply_to_message_id=update.message.message_id)
+	chat = update.effective_chat
+	user_id = update.effective_user.id
+	is_group = chat.type != "private" and chat.type != "channel"
+	if is_group:
+	 bot.send_message(chat_id=update.message.chat_id, text="*ID del grupo:* " + str(chat_id) + "\n*Tu ID: *" + str(user_id), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+	else:
+		bot.send_message(chat_id=update.message.chat_id, text="Tu ID:" + str(chat_id))
 
 
 def aosip(bot, update):
@@ -94,9 +115,8 @@ def cat(bot, update):
 
 def hola(bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text=random.choice(
-		["Hola, cuanto tiempo :D", "Hola", "Eyyy", "Hacia mucho tiempo que no te veia", "Adios",
-		 "Holaaa!!! Cuanto tiempo tio?!?!?!?!", "No tengo nada que decir jajaja", "Hace mucho que no te veo."]),
-	                 reply_to_message_id=update.message.message_id)
+		["*Hola*, cuanto tiempo :D", "*Hola*", "Eyyy", "Hacia mucho tiempo que no te veia", "*Adios.*",
+		 "*Holaaa*!!! Cuanto tiempo tio?!?", "No tengo nada que decir jajaja", "Hace mucho que no te veo."]), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
 def gapps(bot, update):
@@ -115,24 +135,34 @@ def notificaciones(bot, update):
 def ban(bot, update):
 	pass
 	chat_id = update.message.chat_id
+	user_id = update.effective_message.text.split(None, 1)
 	try:
 		bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
-		bot.send_message(chat_id=chat_id, text="Oh vaya, alguien ha tenido que hacer algo muuuy malo....",
-	                 reply_to_message_id=update.message.message_id)
+		bot.send_message(chat_id=chat_id, text="*Baneado!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 	except:
-		bot.send_message(chat_id=chat_id, text="Vaya, No puedo banear a ese usuario :(", reply_to_message_id=update.message.message_id)
+		try:
+			bot.kick_chat_member(chat_id=chat_id, user_id=user_id[1])
+			bot.send_message(chat_id=chat_id, text="*Baneado!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+		except:
+			bot.send_message(chat_id=chat_id, text="*No puedo hacer eso.*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
 @restricted
 def kick(bot, update):
 	pass
 	chat_id = update.message.chat_id
+	user = update.effective_message.text.split(None, 1)
 	try:
 		bot.kick_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
 		bot.unban_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
-		bot.send_message(chat_id=chat_id, text="Expulsado!", reply_to_message_id=update.message.message_id)
+		bot.send_message(chat_id=chat_id, text="*Expulsado!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 	except:
-		bot.send_message(chat_id=chat_id, text="Vaya, No puedo expulsar a ese usuario :(", reply_to_message_id=update.message.message_id)
+		try:
+			bot.kick_chat_member(chat_id=chat_id, user_id=user[1])
+			bot.unban_chat_member(chat_id=chat_id, user_id=user[1])
+			bot.send_message(chat_id=chat_id, text="*Expulsado!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+		except:
+			bot.send_message(chat_id=chat_id, text="Vaya, No puedo expulsar a ese usuario :(", reply_to_message_id=update.message.message_id)
 
 @restricted
 def unban(bot, update):
@@ -140,6 +170,7 @@ def unban(bot, update):
 	chat_id = update.message.chat_id
 	bot_id = [519150573,570971980,519150573]
 	from_user_id = update.message.reply_to_message.from_user.id
+	user = update.effective_message.text.split(None, 1)
 	if from_user_id in bot_id:
 		bot.send_message(chat_id=chat_id, text="Que intentas! xD", reply_to_message_id=update.message.message_id)
 	else:
@@ -147,9 +178,32 @@ def unban(bot, update):
 			bot.unban_chat_member(chat_id=chat_id, user_id=update.message.reply_to_message.from_user.id)
 			bot.send_message(chat_id=chat_id, text="Desbaneado!", reply_to_message_id=update.message.message_id)
 		except:
-			bot.send_message(chat_id=chat_id, text="No puedo desbanear a ese usuario!", reply_to_message_id=update.message.message_id)
+			try:
+				bot.unban_chat_member(chat_id=chat_id, user_id=user[1])
+				bot.send_message(chat_id=chat_id, text="*Desbaneado!", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+			except:
+				bot.send_message(chat_id=chat_id, text="No puedo desbanear a ese usuario!", reply_to_message_id=update.message.message_id)
 
+def delete(bot, update):
+	prev_message = update.effective_message.reply_to_message
+	print(prev_message.message_id)
+	bot.send_message(chat_id=update.message.chat_id, text=prev_message.message_id)
+	#bot.forward_message(chat_id=update.message.chat_id, from_chat_id=update.message.chat_id, message_id=34)
+	if prev_message.message_id:
+		try:
+			bot.delete_message(chat_id=update.message.chat_id, message_id=prev_message.message_id)
+			bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
+		except:
+			bot.send_message(chat_id=update.message.chat_id, text="*No has referido ningun mensaje!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
+def twrp(bot, update):
+	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2146)
+
+def scam(bot, update):
+	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2158)
+
+def rr(bot, update):
+	bot.send_message(chat_id=update.message.chat_id, text="*Puedes descargar la ultima RR desde *[AQUÍ](https://sourceforge.net/projects/resurrectionremix-oreo/files/zl1/)", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
 
@@ -190,11 +244,23 @@ def magisk(bot, update):
 	                 parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 
+
+
+
 def kickthefbot(bot, update):
-	bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
-	bot.forward_message(chat_id=-1001232993925, from_chat_id=-1001232993925, message_id=update.message.message_id)
-	bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
-	bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
+	prohibited = ["http://tinyurl.com","https://t.me"]
+	mensaje = update.message.text
+	if mensaje in prohibited:
+		try:
+			bot.kick_chat_member(chat_id=update.message.chat_id, user_id=update.effective_user.id)
+			bot.forward_message(chat_id=-1001122754147, from_chat_id=update.message.chat_id, message_id=update.message.message_id)
+			bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
+			bot.send_message(chat_id=update.message.chat_id, text="Eso no esta permitido.")
+		except:
+			bot.send_message(chat_id=update.message.chat_id, text="*No puedo borrar el spam!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+
+
+
 
 
 def new_user(bot, update):
@@ -203,9 +269,12 @@ def new_user(bot, update):
 		if not user.is_bot:
 			user_name = user.first_name or user.last_name or user.username
 			user_name = ", {}".format(user_name) if user_name else ""
-			message_texts.append("¡Bienvenid@{},al grupo de Leeco!".format(user_name))
+			message_texts.append("*¡Bienvenid@*{}*, al grupo!*".format(user_name))
 	if message_texts:
-		bot.send_message(chat_id=update.message.chat_id, text='\n'.join(message_texts))
+		bot.send_message(chat_id=update.message.chat_id, text='\n'.join(message_texts), parse_mode=telegram.ParseMode.MARKDOWN)
+
+
+
 
 
 @restricted
@@ -219,7 +288,35 @@ def ancla(bot, update):
 	is_silent = True
 
 	if prev_message and is_group:
-		bot.pin_chat_message(chat_id=update.message.chat_id, message_id=prev_message.message_id)
+		try:
+			bot.pin_chat_message(chat_id=update.message.chat_id, message_id=prev_message.message_id)
+		except:
+			bot.send_message(chat_id=update.message.chat_id, text="*No puedo anclarlo!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # CommandHandler
@@ -227,25 +324,41 @@ restart = CommandHandler("r", restart)
 start = CommandHandler("start", start)
 botid = CommandHandler("id", id)
 aosip = CommandHandler("aosip", aosip)
+rr = CommandHandler("rr", rr)
 cat = CommandHandler("cat", cat)
 hola = RegexHandler("Hola", hola)
 gapps = CommandHandler("gapps", gapps)
 noti = CommandHandler("notificaciones", notificaciones)
 grupos = CommandHandler("grupos", grupos)
 ban = CommandHandler("ban", ban)
+di = CommandHandler("di", di)
 kick = CommandHandler("kick", kick)
 unban = CommandHandler("unban", unban)
+dele = CommandHandler("del", delete)
 gcam = CommandHandler("gcam", gcam)
 selinux = CommandHandler("selinux", selinux)
 roms = CommandHandler("roms", roms)
 logcat = CommandHandler("logcat", logcat)
 magisk = CommandHandler("magisk", magisk)
+twrp = CommandHandler("twrp", twrp)
+scam = CommandHandler("scam", scam)
 new_user = MessageHandler(Filters.status_update.new_chat_members, new_user)
 ancla = CommandHandler("pin", ancla)
 BROADCAST_HANDLER = CommandHandler("broadcast", broadcast)
 ACTUALIZANDO = CommandHandler("actualizar", pull)
+kickthefbot = MessageHandler(Filters.entity("url"), kickthefbot)
+puto = MessageHandler(Filters.all, puto)
 
-kickthefbot = RegexHandler("http://tinyurl.com", kickthefbot)
+
+
+
+
+
+
+
+
+
+
 
 dispatcher = updater.dispatcher
 
@@ -253,6 +366,7 @@ dispatcher.add_handler(restart)
 dispatcher.add_handler(start)
 dispatcher.add_handler(botid)
 dispatcher.add_handler(aosip)
+dispatcher.add_handler(rr)
 dispatcher.add_handler(cat)
 dispatcher.add_handler(hola)
 dispatcher.add_handler(gapps)
@@ -263,14 +377,19 @@ dispatcher.add_handler(selinux)
 dispatcher.add_handler(roms)
 dispatcher.add_handler(logcat)
 dispatcher.add_handler(magisk)
+dispatcher.add_handler(twrp)
+dispatcher.add_handler(scam)
 dispatcher.add_handler(kickthefbot)
 dispatcher.add_handler(new_user)
 dispatcher.add_handler(ancla)
+dispatcher.add_handler(di)
 dispatcher.add_handler(ban)
 dispatcher.add_handler(kick)
 dispatcher.add_handler(unban)
+dispatcher.add_handler(dele)
 dispatcher.add_handler(BROADCAST_HANDLER)
 dispatcher.add_handler(ACTUALIZANDO)
+dispatcher.add_handler(puto)
 
 updater.start_polling()
 
