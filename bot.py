@@ -183,21 +183,21 @@ def unban(bot, update):
 				bot.send_message(chat_id=chat_id, text="*Desbaneado!", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 			except:
 				bot.send_message(chat_id=chat_id, text="No puedo desbanear a ese usuario!", reply_to_message_id=update.message.message_id)
-
+@restricted
 def delete(bot, update):
+	pass
 	prev_message = update.effective_message.reply_to_message
 	print(prev_message.message_id)
-	bot.send_message(chat_id=update.message.chat_id, text=prev_message.message_id)
-	#bot.forward_message(chat_id=update.message.chat_id, from_chat_id=update.message.chat_id, message_id=34)
 	if prev_message.message_id:
 		try:
 			bot.delete_message(chat_id=update.message.chat_id, message_id=prev_message.message_id)
 			bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
 		except:
-			bot.send_message(chat_id=update.message.chat_id, text="*No has referido ningun mensaje!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
+			bot.send_message(chat_id=update.message.chat_id, text="*No tengo permisos!*", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 
 def twrp(bot, update):
-	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2146)
+	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2233)
+	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2234)
 
 def scam(bot, update):
 	bot.forward_message(chat_id=update.message.chat_id, from_chat_id=292633884, message_id=2158)
