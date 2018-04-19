@@ -5,6 +5,7 @@ import logging
 import os
 import random
 import sys
+import git
 from functools import wraps
 from threading import Thread
 
