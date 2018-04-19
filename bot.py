@@ -64,7 +64,7 @@ def di(bot, update):
 
 def puto(bot, update):
 	mensaje = update.message.text
-	prohibido = ["Aguacate","Arroz","hola","Gabriel"]
+	prohibido = ["Aguacate","Arroz","hola","Gabriel","Karl"]
 	if mensaje in prohibido:
 		bot.delete_message(chat_id=update.message.chat_id, message_id=update.message.message_id)
 
