@@ -122,7 +122,7 @@ def hola(bot, update):
 
 def gapps(bot, update):
 	bot.send_message(chat_id=update.message.chat_id,
-	                 text="🌐*Estas son las diferentes GAPPS que hay para android 8:*\n├[💊OPENGAPPS](http://opengapps.org/)\n|\n├[💊MICROG](https://microg.org/download.html)\n|\n└[💊MindTheGapps](http://downloads.codefi.re/jdcteam/javelinanddart/gapps/)",
+	                 text="🌐*Estas son las diferentes GAPPS que hay para android 8(oreo):*\n├[💊OPENGAPPS](http://opengapps.org/)\n|\n├[💊MICROG](https://microg.org/download.html)\n|\n└[💊MindTheGapps](http://downloads.codefi.re/jdcteam/javelinanddart/gapps/)",
 	                 parse_mode=telegram.ParseMode.MARKDOWN)
 
 
