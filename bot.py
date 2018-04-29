@@ -6,6 +6,7 @@ import random
 import sys
 from functools import wraps
 from threading import Thread
+import git
 
 import telegram
 from pip.vcs import git
@@ -229,8 +230,6 @@ def cat(bot, update):
 
 
 def hola(bot, update):
-    file_id = update.message.file_id
-    print(bot.get_file(file_id))
     bot.send_message(chat_id=update.message.chat_id, text=random.choice(
         ["*Hola*, cuanto tiempo :D", "*Hola*", "Eyyy", "Hacia mucho tiempo que no te veia",
          "*Holaaa*!!! Cuanto tiempo tio?!?", "Hace mucho que no te veo."]), parse_mode=telegram.ParseMode.MARKDOWN,
