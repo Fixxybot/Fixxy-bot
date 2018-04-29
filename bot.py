@@ -223,9 +223,7 @@ def callback(bot, update):
 
 
 def cat(bot, update):
-    bot.send_photo(chat_id=update.message.chat_id, photo=random.choice(
-        ["https://bit.ly/2JEJG3A", "https://bit.ly/2v5Rb0r", "https://bit.ly/2IK1s4k", "https://bit.ly/2v4PIrg",
-         "https://bit.ly/2GPo6rp", "https://bit.ly/2qnF3SU"]))
+    bot.send_photo(chat_id=update.message.chat_id, photo="https://giphy.com/gifs/cat-weird-bra-p4xp4BjHIdane")
 
 
 def hola(bot, update):
