@@ -9,7 +9,6 @@ from threading import Thread
 import git
 
 import telegram
-from pip.vcs import git
 from telegram.ext import *
 
 config = configparser.ConfigParser()
