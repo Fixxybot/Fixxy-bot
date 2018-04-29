@@ -139,87 +139,56 @@ def aosip(bot, update):
         '🔽🔽 *ROMs PARA LePro3 y LeMax2* 🔽🔽', parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=telegram.InlineKeyboardMarkup(
             [
-                [telegram.InlineKeyboardButton('🔽📲LePro3🔽', callback_data='LePro3'),
-                 telegram.InlineKeyboardButton("🔽📲LeMax2🔽", callback_data='LeMax2')],
-                [telegram.InlineKeyboardButton('🔽📲x720🔽', callback_data="x720"),
-                 telegram.InlineKeyboardButton("🔽📲x722🔽", callback_data='X722'),
-                 telegram.InlineKeyboardButton("🔽x820🔽", callback_data='x820'),
-                 telegram.InlineKeyboardButton("🔽x829🔽", callback_data='x829')],
-                [telegram.InlineKeyboardButton('🗂AOSiP', url='http://get.aosiprom.com/zl1'),
-                 telegram.InlineKeyboardButton("🗂AOSiP", url='http://get.aosiprom.com/x2')],
-                [telegram.InlineKeyboardButton('🗂AOKP', url="google.es"),
-                 telegram.InlineKeyboardButton("🗂AICP", url='http://dwnld.aicp-rom.com/?device=x2')],
-                [telegram.InlineKeyboardButton('🗂AEX', url='https://androidfilehost.com/?w=files&flid=261896'),
-                 telegram.InlineKeyboardButton("🗂DirtyUnicorns", url="google.es")],
-                [telegram.InlineKeyboardButton('🗂LineageOS', url='https://download.lineageos.org/zl1'),
-                 telegram.InlineKeyboardButton("🗂LineageOS", url='https://download.lineageos.org/x2')],
-                [telegram.InlineKeyboardButton('🗂AICP', url='http://dwnld.aicp-rom.com/?device=zl1'),
-                 telegram.InlineKeyboardButton("🗂AEX", url='https://downloads.aospextended.com/x2')],
-                [telegram.InlineKeyboardButton('❌"', callback_data='Hueco8'),
-                 telegram.InlineKeyboardButton("🗂PixelExperience", url='https://download.pixelexperience.org/x2/')],
-                [telegram.InlineKeyboardButton("Cerrar menú", callback_data="Cerrar")]
-            ]
+                [ telegram.InlineKeyboardButton('📲LePro3', callback_data='LePro3'), telegram.InlineKeyboardButton("📲LeMax2", callback_data='LeMax2') ],
+				[ telegram.InlineKeyboardButton('🗂AOSiP', url='http://get.aosiprom.com/zl1'), telegram.InlineKeyboardButton("🗂AOSiP", url='http://get.aosiprom.com/x2') ],
+				[ telegram.InlineKeyboardButton('🗂AOKP', url="google.es"), telegram.InlineKeyboardButton("🗂AICP", url='http://dwnld.aicp-rom.com/?device=x2') ],
+				[ telegram.InlineKeyboardButton('🗂AEX', url='https://androidfilehost.com/?w=files&flid=261896'), telegram.InlineKeyboardButton("🗂DirtyUnicorns", url="google.es") ],
+				[ telegram.InlineKeyboardButton('🗂LineageOS', url='https://download.lineageos.org/zl1'), telegram.InlineKeyboardButton("🗂LineageOS", url='https://download.lineageos.org/x2') ],
+				[ telegram.InlineKeyboardButton('🗂AICP', url='http://dwnld.aicp-rom.com/?device=zl1'), telegram.InlineKeyboardButton("🗂AEX", url='https://downloads.aospextended.com/x2') ],
+				[ telegram.InlineKeyboardButton('❌', callback_data='Hueco8'), telegram.InlineKeyboardButton("🗂PixelExperience", url='https://download.pixelexperience.org/x2/') ],
+				[ telegram.InlineKeyboardButton("Cerrar menú", callback_data="Cerrar")]
+			]
         )
     )
 
 
 def callback(bot, update):
-    query = update.callback_query
-    if update.callback_query.data == 'LePro3':
-        bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LePro3', show_alert=True)
-    if update.callback_query.data == 'LeMax2':
-        bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LeMax2', show_alert=True)
-    if update.callback_query.data == "X720":
-        bot.answer_callback_query(update.callback_query.id,
-                                  text="En este lado las roms para la version x720, si esta en medio, es que es compatible con las 2 versiones",
-                                  show_alert=True)
-    if update.callback_query.data == 'X722':
-        bot.answer_callback_query(update.callback_query.id,
-                                  text="En este lado las ROMs para la version x722, si esta en medio, es que es compatible para las 2 versiones",
-                                  show_alert=True)
-    if update.callback_query.data == 'x820':
-        bot.answer_callback_query(update.callback_query.id,
-                                  text="En este lado las ROMs para la version x820, si esta en medio, es que es compatible para las 2 versiones",
-                                  show_alert=True)
-    if update.callback_query.data == 'x829':
-        bot.answer_callback_query(update.callback_query.id,
-                                  text="En este lado las ROMs para la version x829, si esta en medio, es que es compatible para las 2 versiones",
-                                  show_alert=True)
-    if update.callback_query.data == 'Hueco8':
-        bot.answer_callback_query(update.callback_query.id, text="*HUECO VACÍO*\n *¡PON AQUÍ TU ROM!", show_alert=True)
-    if update.callback_query.data == "Cerrar":
-        bot.edit_message_text(text="❌", chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-    if update.callback_query.data == "Le3":
-        bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id,
-                              message_id=query.message.message_id,
-                              reply_markup=telegram.InlineKeyboardMarkup(
-                                  [
-                                      [telegram.InlineKeyboardButton('📲x720', callback_data='720'),
-                                       telegram.InlineKeyboardButton("📲X722", callback_data='722')],
-                                      [telegram.InlineKeyboardButton("◀️Volver atrás", callback_data="Atrás")]
-                                  ]
-                              )
-                              )
-    if update.callback_query.data == "720":
-        bot.edit_message_text(text="TWRP para el 720:", chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADiwQAArffKVMaFJv2M4D-UQI")
-    if update.callback_query.data == "722":
-        bot.edit_message_text(text="TWRP para el 722:", chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVMb20GYGes-CwI")
-    if update.callback_query.data == "Atrás":
-        bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id,
-                              message_id=query.message.message_id,
-                              reply_markup=telegram.InlineKeyboardMarkup(
-                                  [
-                                      [telegram.InlineKeyboardButton('📲LePro3', callback_data='Le3'),
-                                       telegram.InlineKeyboardButton("📲LeMax2", callback_data='Le2')],
-                                      [telegram.InlineKeyboardButton("❌Cerrar menú", callback_data="Cerrar")]
-                                  ]
-                              )
-                              )
+	query = update.callback_query
+	if update.callback_query.data == 'LePro3':
+        	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LePro3', show_alert=True	)
+	if update.callback_query.data == 'LeMax2':
+        	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LeMax2', show_alert=True	)
+	if update.callback_query.data == 'Hueco8':
+			bot.answer_callback_query(update.callback_query.id, text="*HUECO VACÍO*\n *¡PON AQUÍ TU ROM!", show_alert=True)
+	if update.callback_query.data == "Cerrar":
+			bot.edit_message_text(text="❌", chat_id=query.message.chat_id,
+                      message_id=query.message.message_id)
+	if update.callback_query.data == "Le3":
+			bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id, message_id=query.message.message_id,
+			reply_markup=telegram.InlineKeyboardMarkup(
+	            [
+	                [ telegram.InlineKeyboardButton('📲x720', callback_data='720'), telegram.InlineKeyboardButton("📲X722", callback_data='722') ],
+					[ telegram.InlineKeyboardButton("◀️Volver atrás", callback_data="Atrás")]
+				]
+	        )
+	    )
+	if update.callback_query.data == "720":
+			bot.edit_message_text(text="TWRP para el 720:", chat_id=query.message.chat_id,
+				  message_id=query.message.message_id)
+			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADiwQAArffKVMaFJv2M4D-UQI")
+	if update.callback_query.data == "722":
+			bot.edit_message_text(text="TWRP para el 722:", chat_id=query.message.chat_id,
+				  message_id=query.message.message_id)
+			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVMb20GYGes-CwI")
+	if update.callback_query.data == "Atrás":
+			bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id, message_id=query.message.message_id,
+			reply_markup=telegram.InlineKeyboardMarkup(
+			[
+				[ telegram.InlineKeyboardButton('📲LePro3', callback_data='Le3'), telegram.InlineKeyboardButton("📲LeMax2", callback_data='Le2') ],
+				[ telegram.InlineKeyboardButton("❌Cerrar menú", callback_data="Cerrar")]
+			]
+		)
+	)
 
 
 def cat(bot, update):
