@@ -159,11 +159,12 @@ def callback(bot, update):
 	if update.callback_query.data == "720":
 			bot.edit_message_text(text="TWRP para el 720:", chat_id=query.message.chat_id,
 				  message_id=query.message.message_id)
-			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADiwQAArffKVMaFJv2M4D-UQI")
+			
+			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVMb20GYGes-CwI")
 	if update.callback_query.data == "722":
 			bot.edit_message_text(text="TWRP para el 722:", chat_id=query.message.chat_id,
 				  message_id=query.message.message_id)
-			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVMb20GYGes-CwI")
+			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADiwQAArffKVMaFJv2M4D-UQI")
 	if update.callback_query.data == "Atrás":
 			bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id, message_id=query.message.message_id,
 			reply_markup=telegram.InlineKeyboardMarkup(
