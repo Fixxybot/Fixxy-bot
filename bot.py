@@ -130,7 +130,7 @@ def aosip(bot, update):
 				[ telegram.InlineKeyboardButton('AEX', url='https://androidfilehost.com/?w=files&flid=261896'), telegram.InlineKeyboardButton("DirtyUnicorns", url="https://drive.google.com/file/d/1w04FmjEdU8-AWgsoBCk1UFIy8feOcykm/view") ],
 				[ telegram.InlineKeyboardButton('LineageOS', url='https://download.lineageos.org/zl1'), telegram.InlineKeyboardButton("LineageOS", url='https://download.lineageos.org/x2') ],
 				[ telegram.InlineKeyboardButton('AICP', url='http://dwnld.aicp-rom.com/?device=zl1'), telegram.InlineKeyboardButton("AEX", url='https://downloads.aospextended.com/x2') ],
-				[ telegram.InlineKeyboardButton('❌', callback_data='Hueco8'), telegram.InlineKeyboardButton("PixelExperience", url='https://download.pixelexperience.org/x2/') ],
+				[ telegram.InlineKeyboardButton('❌', url="https://sourceforge.net/projects/resurrectionremix-oreo/files/zl1/"), telegram.InlineKeyboardButton("PixelExperience", url='https://download.pixelexperience.org/x2/') ],
 				[ telegram.InlineKeyboardButton("Cerrar menú", callback_data="Cerrar")]
 			]
         )
@@ -142,8 +142,8 @@ def callback(bot, update):
         	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LePro3', show_alert=True	)
 	if update.callback_query.data == 'LeMax2':
         	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LeMax2', show_alert=True	)
-	if update.callback_query.data == 'Hueco8':
-			bot.answer_callback_query(update.callback_query.id, text="*HUECO VACÍO*\n *¡PON AQUÍ TU ROM!", show_alert=True)
+	
+			
 	if update.callback_query.data == "Cerrar":
 			bot.edit_message_text(text="❌", chat_id=query.message.chat_id,
                       message_id=query.message.message_id)
