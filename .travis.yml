@@ -5,4 +5,4 @@ python:
 install:
   - pip install python-telegram-bot --upgrade
   - pip install peewee
-  - pip install github
+  - pip install GitPython
