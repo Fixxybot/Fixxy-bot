@@ -6,5 +6,4 @@ install:
   - pip install python-telegram-bot --upgrade
   - pip install peewee
   - pip install GitPython
-script:
-  - pytest
+script: make test
