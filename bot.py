@@ -8,6 +8,7 @@ import sys
 from functools import wraps
 from threading import Thread
 import git
+from peewee import *
 
 import telegram
 from telegram.ext import *
@@ -15,7 +16,9 @@ from telegram.ext import *
 
 config = configparser.ConfigParser()
 config.read('token.txt')
-
+db = SqliteDatabase('bot.db')
+db.connect()
+db.create_tables([Entry], safe=True)
 bot = telegram.Bot(token=config['KEYS']['bot_api'])
 
 logging.basicConfig(
@@ -26,8 +29,21 @@ updater = Updater(bot.token)
 # Gather group ids to broadcast messages
 CHAT_IDS_ES = [-1001074112167, -1001176122092, "@Leecox722", "@AOSiP_x2"]
 # List of admins
-LIST_OF_ADMINS = [37757673, 223502407, 292633884]
+#LIST_OF_ADMINS = [37757673, 223502407, 292633884]
 CHAT_IDS_ES_LEN = len(CHAT_IDS_ES)
+
+
+class Admin(Model):
+    """Admin model."""
+
+    #username = CharField(max_length=255, unique=True)
+    id = IntegerField(unique=True)
+
+    class Meta:
+        """Import db."""
+
+        database = db
+
 
 def test(bot, update):
 	test1 = bot.sendDocument(chat_id=update.message.chat_id, document="BQADBAADiwQAArffKVMaFJv2M4D-UQI")
@@ -38,15 +54,37 @@ def restricted(func):
 	@wraps(func)
 	def wrapped(bot, update, *args, **kwargs):
 		user_id = update.effective_user.id
-		if user_id not in LIST_OF_ADMINS:
+		if user_id not in get_admin():
 			bot.send_message(chat_id=update.message.chat_id, text="No tienes permiso para hacer eso.", parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=update.message.message_id)
 			return
 		return func(bot, update, *args, **kwargs)
 
 	return wrapped
+@restricted
+def add_admin(bot, update):
+	pass
+	user_id = update.effective_message.text.split(None, 1)
+	if update.message.reply_to_message is not None:
+		prev_user = update.message.reply_to_message.from_user.id
+		prev_name =update.message.reply_to_message.from_user.username
+		if prev_user:
+			if prev_user not in get_admin():
+				Entry.create(id=prev_name)
+				bot.send_message(chat_id=chat_id=update.message.chat_id, text="Promocionado "+prev_name, reply_to_message_id=update.message.message_id)
+			else:
+				bot.send_message(chat_id=chat_id=update.message.chat_id, text="El usuario "+prev_name+ "ya es un admin", reply_to_message_id=update.message.message_id)
+		else:
+			if user_id[1]:
+				Entry.create(id =user_id[1])
 
 def get_admin_ids(bot, chat_id):
     return [admin.user.id for admin in bot.get_chat_administrators(chat_id)]
+def get_admin():
+	entries = Entry.select()
+	admin = []
+	for entry in entries:
+		admin.append(entry.id)
+	return admin
 
 @restricted
 def broadcast(bot, update):
@@ -142,8 +180,8 @@ def callback(bot, update):
         	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LePro3', show_alert=True	)
 	if update.callback_query.data == 'LeMax2':
         	bot.answer_callback_query(update.callback_query.id, text='ROMs para el LeEco LeMax2', show_alert=True	)
-	
-			
+
+
 	if update.callback_query.data == "Cerrar":
 			bot.edit_message_text(text="❌", chat_id=query.message.chat_id,
                       message_id=query.message.message_id)
@@ -159,7 +197,7 @@ def callback(bot, update):
 	if update.callback_query.data == "720":
 			bot.edit_message_text(text="TWRP para el 720:", chat_id=query.message.chat_id,
 				  message_id=query.message.message_id)
-			
+
 			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVOQ6Qtts3CXrwI")
 	if update.callback_query.data == "722":
 			bot.edit_message_text(text="TWRP para el 722:", chat_id=query.message.chat_id,
