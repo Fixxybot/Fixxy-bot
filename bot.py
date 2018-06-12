@@ -167,6 +167,7 @@ def aosip(bot, update):
 				[ telegram.InlineKeyboardButton('AOKP', url="http://aokp.co/"), telegram.InlineKeyboardButton("AICP", url='http://dwnld.aicp-rom.com/?device=x2') ],
 				[ telegram.InlineKeyboardButton('AEX', url='https://androidfilehost.com/?w=files&flid=261896'), telegram.InlineKeyboardButton("DirtyUnicorns", url="https://drive.google.com/file/d/1w04FmjEdU8-AWgsoBCk1UFIy8feOcykm/view") ],
 				[ telegram.InlineKeyboardButton('LineageOS', url='https://download.lineageos.org/zl1'), telegram.InlineKeyboardButton("LineageOS", url='https://download.lineageos.org/x2') ],
+		   		[ telegram.InlineKeyboardButton('CardinalAOSP', url='https://forum.xda-developers.com/le-pro3/development/rom-cardinal-aosp-t3774789'), telegram.InlineKeyboardButton("Espacio vacío", callback_data='https://download.lineageos.org/x2') ],
 				[ telegram.InlineKeyboardButton('AICP', url='http://dwnld.aicp-rom.com/?device=zl1'), telegram.InlineKeyboardButton("AEX", url='https://downloads.aospextended.com/x2') ],
 				[ telegram.InlineKeyboardButton('RR', url="https://sourceforge.net/projects/resurrectionremix-oreo/files/zl1/"), telegram.InlineKeyboardButton("PixelExperience", url='https://download.pixelexperience.org/x2/') ],
 				[ telegram.InlineKeyboardButton("Cerrar menú", callback_data="Cerrar")]
@@ -197,12 +198,12 @@ def callback(bot, update):
 	if update.callback_query.data == "720":
 			bot.edit_message_text(text="TWRP para el 720:", chat_id=query.message.chat_id,
 				  message_id=query.message.message_id)
-
 			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADjQQAArffKVOQ6Qtts3CXrwI")
+
 	if update.callback_query.data == "722":
 			bot.edit_message_text(text="TWRP para el 722:", chat_id=query.message.chat_id,
 				  message_id=query.message.message_id)
-			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAADiwQAArffKVMUyszyzmjYmAI")
+			bot.sendDocument(chat_id=query.message.chat_id, document="BQADBAAD7AIAAlTa6FNs2-JfgX1BFAI")
 	if update.callback_query.data == "Atrás":
 			bot.edit_message_text(text="Selecciona tu version: ", chat_id=query.message.chat_id, message_id=query.message.message_id,
 			reply_markup=telegram.InlineKeyboardMarkup(
