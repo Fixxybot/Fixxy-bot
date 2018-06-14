@@ -1,4 +1,4 @@
-
+""""Config for the bot"""
 
 # the token of the bot you get from t.me/botfather (type: str)
 
