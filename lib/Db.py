@@ -55,4 +55,4 @@ class commands(Model):
 
 def main():
     db.connect()
-    db.create_tables([User, Group], safe=True)
+    db.create_tables([User, Group, warns, commands], safe=True)
